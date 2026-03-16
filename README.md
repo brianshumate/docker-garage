@@ -1,4 +1,4 @@
-# Garage
+# Garage on Docker
 
 [Garage](https://garagehq.deuxfleurs.fr/) is open source S3 API compatible object storage.
 
