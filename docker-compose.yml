@@ -1,0 +1,14 @@
+services:
+  garage-node:
+    image: dxflrs/garage:v2.2.0 # Use the official image from Docker Hub
+    container_name: garage-node
+    restart: unless-stopped
+    ports:
+      - "3900:3900" # S3 API port
+      - "3901:3901" # RPC port
+      - "3902:3902" # (optional) S3 Web port
+      - "3903:3903" # (optional) Admin API port
+    volumes:
+      - ./data:/var/lib/garage/data
+      - ./meta:/var/lib/garage/meta
+      - ./garage.toml:/etc/garage.toml # Mount custom configuration file
