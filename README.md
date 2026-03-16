@@ -2,9 +2,7 @@
 
 [Garage](https://garagehq.deuxfleurs.fr/) is open source S3 API compatible object storage.
 
-- [Quick start](https://garagehq.deuxfleurs.fr/documentation/quick-start/)
-- [Documentation](https://garagehq.deuxfleurs.fr/documentation/quick-start/)
-- [Cookbook](https://garagehq.deuxfleurs.fr/documentation/cookbook/)
+This is a Docker Compose project that enables a single node Garage server for development and testing, but **not for production**.
 
 ## Generate a node configuration file
 
@@ -22,9 +20,13 @@ Use the Docker Compose file to deploy a single node Garage instance.
 docker compose up -d
 ```
 
-## Configure the node storage
+Check the container status to ensure it is up and running.
 
-1. Get the Garage server node ID.
+```shell
+docker ps -f name=garage-node --format "table {{.Names}}\t{{.Status}}"
+```
+
+1. Check the Garage server stats to get the server's node ID.
 
     ```shell
     docker compose exec garage-node /garage status
@@ -39,6 +41,8 @@ docker compose up -d
     ID                Hostname      Address         Tags  Zone  Capacity          DataAvail  Version
     9d823fdb137717b5  ddf882ba1ea9  127.0.0.1:3901              NO ROLE ASSIGNED             v2.2.0
     ```
+
+## Configure the node storage
 
 1. Assign 1 GB of storage capacity (replace <NODE_ID> with your actual ID).
 
@@ -57,7 +61,7 @@ docker compose up -d
     and `garage layout apply` to enact staged changes.
     ```
 
-1. Apply capacity changes.
+1. Apply the storage capacity changes.
 
     ```shell
     docker compose exec garage-node /garage layout apply --version 1
@@ -86,6 +90,8 @@ docker compose up -d
     ```
  
 ## Create a key and bucket
+
+Now that you configured storage, you can create a key and bucket.
 
 1. Create an example key, and record the **Key ID** and **Secret key** values for later use.
 
@@ -205,3 +211,24 @@ I use `uv` for the environment, but you can use whatever you like to install aws
     aws s3 ls
     2026-03-16 11:22:08 my-bucket
     ```
+
+## Cleanup
+
+1. Stop Docker infrastructure.
+
+    ```shell
+    docker compose down
+    ```
+
+1. Remove data, metadata, and configuration.
+
+```shell
+rm -rf ./data/* ./meta/* ./garage.toml
+```
+
+## References
+
+- [Garage Docker image](https://hub.docker.com/r/dxflrs/garage)
+- [Quick start](https://garagehq.deuxfleurs.fr/documentation/quick-start/)
+- [Documentation](https://garagehq.deuxfleurs.fr/documentation/quick-start/)
+- [Cookbook](https://garagehq.deuxfleurs.fr/documentation/cookbook/)
